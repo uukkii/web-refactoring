@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static ru.netology.Request.*;
+
 public class Server {
     final List<String> validPaths = List.of("/index.html", "/spring.svg", "/spring.png", "/resources.html", "/styles.css", "/app.js", "/links.html", "/forms.html", "/classic.html", "/events.html", "/events.js");
     ExecutorService executorService;
@@ -44,7 +46,13 @@ public class Server {
                 return;
             }
 
-            final var path = parts[1];
+            // Request
+            final var pathAndQuery = parts[1];
+            System.out.println("Parameters");
+            var parsingResultParams = getQueryParams(pathAndQuery);
+            var path = getQueryParamsPath(pathAndQuery);
+            System.out.println(parsingResultParams + "\n" + path);
+
             if (!validPaths.contains(path)) {
                 out.write((
                         """
