@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -44,7 +45,17 @@ public class Server {
                 return;
             }
 
-            final var path = parts[1];
+            // Request
+            Request request = new Request(in);
+
+            System.out.println("Parameters");
+            var requestQueryParams = request.getQueryParams();
+            for (Map.Entry<String, String> entry : requestQueryParams.entrySet()) {
+                System.out.println(entry.getKey() + " " + entry.getValue());
+            }
+            System.out.println("Path");
+            var path = request.getQueryParam("path");
+
             if (!validPaths.contains(path)) {
                 out.write((
                         """
